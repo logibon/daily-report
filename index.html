@@ -457,7 +457,9 @@
     }
 
     const fd = new FormData(this);
-    const reportId = 'RPT-' + Date.now().toString(36).toUpperCase();
+    const company = fd.get('company') || '';
+    const companyPrefix = company.replace(/\s+/g, '').substring(0, 10) || 'RPT';
+    const reportId = companyPrefix + '-' + Date.now().toString(36).toUpperCase();
 
     // 画像ファイル取得
     const highwayInput = document.querySelector('input[onchange*="prev-highway"]');
