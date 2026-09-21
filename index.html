@@ -7,345 +7,407 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f5f4f0;
-    --surface: #ffffff;
-    --surface2: #f0efe9;
+    --bg: #f5f4f0; --surface: #fff; --surface2: #f0efe9;
     --border: #d6d3c8;
-    --accent: #1a3a5c;
-    --accent2: #2d6a9f;
-    --accent-end: #1a5c3a;
-    --accent-end2: #2d9f6a;
-    --text: #1c1c1c;
-    --text-muted: #7a7669;
-    --success: #2e7d52;
-    --danger: #b5382a;
-    --radius: 6px;
+    --blue: #1a3a5c; --blue2: #2d6a9f;
+    --green: #1a5c3a; --green2: #2d9f6a;
+    --text: #1c1c1c; --text-muted: #7a7669;
+    --danger: #b5382a; --radius: 10px;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    background: var(--bg); color: var(--text);
-    font-family: 'Noto Sans JP', sans-serif;
-    min-height: 100vh; padding: 16px; font-size: 14px;
-  }
-  .container { max-width: 680px; margin: 0 auto; }
+  html, body { height:100%; }
+  body { background:var(--bg); color:var(--text); font-family:'Noto Sans JP',sans-serif; font-size:14px; }
 
-  /* Header */
-  .header {
-    background: var(--accent); color: #fff;
-    border-radius: var(--radius) var(--radius) 0 0;
-    padding: 20px 24px 16px;
-    display: flex; align-items: flex-end;
-    justify-content: space-between; gap: 12px;
+  /* ===== SCREEN SYSTEM ===== */
+  .screen { display:none; min-height:100vh; flex-direction:column; }
+  .screen.active { display:flex; }
+
+  /* ===== HOME ===== */
+  #home {
+    background: linear-gradient(160deg, #1a3a5c 0%, #1a5c3a 100%);
+    align-items:center; justify-content:center; padding:32px 24px;
   }
-  .header h1 { font-size: 22px; font-weight: 900; letter-spacing: .1em; }
-  .header p { font-size: 11px; opacity: .65; font-family: 'Space Mono', monospace; margin-top: 2px; }
-  .header-right { font-family: 'Space Mono', monospace; font-size: 11px; opacity: .8; text-align: right; flex-shrink: 0; }
+  .home-inner { width:100%; max-width:400px; }
+  .home-logo { text-align:center; margin-bottom:48px; }
+  .home-logo .icon { font-size:56px; display:block; margin-bottom:12px; }
+  .home-logo h1 { font-size:28px; font-weight:900; color:#fff; letter-spacing:.1em; }
+  .home-logo p { font-size:12px; color:rgba(255,255,255,.6); font-family:'Space Mono',monospace; margin-top:4px; }
+  .home-date { text-align:center; color:rgba(255,255,255,.7); font-size:13px; margin-bottom:40px; font-family:'Space Mono',monospace; }
+
+  .home-btn {
+    width:100%; border:none; border-radius:14px; padding:22px 20px;
+    cursor:pointer; margin-bottom:14px;
+    display:flex; align-items:center; gap:16px;
+    transition:all .2s; text-align:left;
+  }
+  .home-btn:active { transform:scale(.97); }
+  .home-btn.start { background:#fff; }
+  .home-btn.end   { background:rgba(255,255,255,.15); border:2px solid rgba(255,255,255,.4); }
+  .home-btn .btn-icon { font-size:36px; flex-shrink:0; }
+  .home-btn .btn-text h2 { font-size:18px; font-weight:900; }
+  .home-btn .btn-text p  { font-size:12px; margin-top:3px; opacity:.7; }
+  .home-btn.start .btn-text h2 { color:var(--blue); }
+  .home-btn.start .btn-text p  { color:var(--blue); }
+  .home-btn.end   .btn-text h2 { color:#fff; }
+  .home-btn.end   .btn-text p  { color:#fff; }
+  .home-btn .arrow { margin-left:auto; font-size:20px; opacity:.4; flex-shrink:0; }
+  .home-btn.start .arrow { color:var(--blue); }
+  .home-btn.end   .arrow { color:#fff; }
+
+  /* ===== FORM SCREENS ===== */
+  .form-screen { background:var(--bg); }
+  .form-header {
+    color:#fff; padding:20px 20px 16px;
+    display:flex; align-items:center; gap:14px; flex-shrink:0;
+  }
+  .form-header.start { background:var(--blue); }
+  .form-header.end   { background:var(--green); }
+  .back-btn {
+    background:rgba(255,255,255,.2); border:none; border-radius:8px;
+    color:#fff; width:36px; height:36px; font-size:18px;
+    cursor:pointer; display:grid; place-items:center; flex-shrink:0;
+    transition:background .2s;
+  }
+  .back-btn:hover { background:rgba(255,255,255,.35); }
+  .form-header-text h2 { font-size:18px; font-weight:900; }
+  .form-header-text p  { font-size:11px; opacity:.65; font-family:'Space Mono',monospace; margin-top:2px; }
+
+  .form-body { flex:1; overflow-y:auto; padding:16px; }
+  .form-inner { max-width:680px; margin:0 auto; }
 
   /* Section */
-  .section {
-    background: var(--surface); border: 1px solid var(--border);
-    border-top: none; padding: 18px 20px;
-  }
-  .section:last-of-type { border-radius: 0 0 var(--radius) var(--radius); margin-bottom: 16px; }
+  .section { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px 18px; margin-bottom:12px; }
   .section-title {
-    font-size: 10px; font-weight: 700; letter-spacing: .15em;
-    text-transform: uppercase; font-family: 'Space Mono', monospace;
-    display: flex; align-items: center; gap: 7px;
-    padding-bottom: 10px; margin-bottom: 14px; border-bottom: 2px solid;
+    font-size:10px; font-weight:700; letter-spacing:.15em; text-transform:uppercase;
+    font-family:'Space Mono',monospace; display:flex; align-items:center; gap:6px;
+    padding-bottom:10px; margin-bottom:14px; border-bottom:2px solid;
   }
-  .section-title.start { color: var(--accent); border-color: var(--accent); }
-  .section-title.end { color: var(--accent-end); border-color: var(--accent-end); }
-  .section-title.common { color: var(--text-muted); border-color: var(--border); }
+  .section-title.blue  { color:var(--blue);  border-color:var(--blue); }
+  .section-title.green { color:var(--green); border-color:var(--green); }
+  .section-title.gray  { color:var(--text-muted); border-color:var(--border); }
 
-  /* Grid */
-  .grid { display: grid; gap: 12px; }
-  .g2 { grid-template-columns: 1fr 1fr; }
-  @media(max-width:480px) { .g2 { grid-template-columns: 1fr; } }
-
-  /* Field */
-  .field { display: flex; flex-direction: column; gap: 4px; }
-  .field label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: .06em; text-transform: uppercase; }
-  .req { color: var(--danger); margin-left: 2px; }
+  /* Grid / Field */
+  .grid  { display:grid; gap:12px; }
+  .g2    { grid-template-columns:1fr 1fr; }
+  @media(max-width:460px) { .g2 { grid-template-columns:1fr; } }
+  .field { display:flex; flex-direction:column; gap:4px; }
+  .field label { font-size:10px; font-weight:700; color:var(--text-muted); letter-spacing:.06em; text-transform:uppercase; }
+  .req { color:var(--danger); margin-left:2px; }
 
   input[type=text], input[type=date], input[type=time], input[type=number], textarea {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 5px; color: var(--text);
-    font-family: 'Noto Sans JP', sans-serif; font-size: 14px;
-    padding: 9px 11px; width: 100%;
-    outline: none; transition: border-color .15s, box-shadow .15s;
-    -webkit-appearance: none; appearance: none;
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:7px; color:var(--text);
+    font-family:'Noto Sans JP',sans-serif; font-size:15px;
+    padding:11px 13px; width:100%; outline:none;
+    transition:border-color .15s, box-shadow .15s;
+    -webkit-appearance:none; appearance:none;
   }
-  input:focus, textarea:focus {
-    border-color: var(--accent2);
-    box-shadow: 0 0 0 3px rgba(45,106,159,.12); background: #fff;
-  }
-  textarea { resize: vertical; min-height: 72px; }
+  input:focus, textarea:focus { border-color:var(--blue2); box-shadow:0 0 0 3px rgba(45,106,159,.12); background:#fff; }
+  textarea { resize:vertical; min-height:80px; }
 
-  /* Calc field */
-  .calc-field input {
-    background: #e8f4e8; border-color: var(--accent-end);
-    font-weight: 700; color: var(--accent-end);
-  }
-  .calc-note { font-size: 10px; color: var(--accent-end); font-family: 'Space Mono', monospace; margin-top: 3px; }
+  .calc-field input { background:#e8f4e8; border-color:var(--green); font-weight:700; color:var(--green); }
+  .calc-note { font-size:10px; color:var(--green); font-family:'Space Mono',monospace; margin-top:3px; }
 
-  /* Photo upload */
-  .photo-upload {
-    border: 2px dashed var(--border); border-radius: 6px;
-    padding: 16px; text-align: center; cursor: pointer;
-    background: var(--surface2); position: relative;
-    transition: all .2s; margin-bottom: 8px;
-  }
-  .photo-upload:hover { border-color: var(--accent2); background: #eef4fa; }
-  .photo-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .photo-upload-icon { font-size: 22px; margin-bottom: 4px; }
-  .photo-upload p { font-size: 12px; color: var(--text-muted); }
-  .photo-upload strong { color: var(--accent2); }
-  .preview-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
-  .preview-row img { width: 72px; height: 72px; object-fit: cover; border-radius: 6px; border: 2px solid var(--border); }
+  /* Photo */
+  .photo-upload { border:2px dashed var(--border); border-radius:8px; padding:16px; text-align:center; cursor:pointer; background:var(--surface2); position:relative; transition:all .2s; margin-bottom:8px; }
+  .photo-upload:hover { border-color:var(--blue2); background:#eef4fa; }
+  .photo-upload input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+  .photo-upload-icon { font-size:22px; margin-bottom:4px; }
+  .photo-upload p { font-size:12px; color:var(--text-muted); }
+  .photo-upload strong { color:var(--blue2); }
+  .preview-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+  .preview-row img { width:72px; height:72px; object-fit:cover; border-radius:7px; border:2px solid var(--border); }
 
-  /* Submit buttons */
-  .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .btn-start {
-    background: var(--accent); color: #fff;
-    border: none; border-radius: var(--radius); padding: 15px 10px;
-    font-size: 14px; font-weight: 900;
-    font-family: 'Noto Sans JP', sans-serif;
-    cursor: pointer; letter-spacing: .06em;
-    transition: all .2s;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
+  /* Submit btn */
+  .btn-submit {
+    width:100%; border:none; border-radius:10px; padding:16px;
+    font-size:16px; font-weight:900; font-family:'Noto Sans JP',sans-serif;
+    cursor:pointer; letter-spacing:.08em; transition:all .2s;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    color:#fff;
   }
-  .btn-start:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,58,92,.25); }
-  .btn-start:disabled { opacity:.6; cursor:not-allowed; transform:none; }
-
-  .btn-end {
-    background: var(--accent-end); color: #fff;
-    border: none; border-radius: var(--radius); padding: 15px 10px;
-    font-size: 14px; font-weight: 900;
-    font-family: 'Noto Sans JP', sans-serif;
-    cursor: pointer; letter-spacing: .06em;
-    transition: all .2s;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-  }
-  .btn-end:hover { background: var(--accent-end2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,92,58,.25); }
-  .btn-end:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+  .btn-submit.blue  { background:var(--blue); }
+  .btn-submit.blue:hover  { background:var(--blue2); transform:translateY(-1px); }
+  .btn-submit.green { background:var(--green); }
+  .btn-submit.green:hover { background:var(--green2); transform:translateY(-1px); }
+  .btn-submit:disabled { opacity:.6; cursor:not-allowed; transform:none !important; }
 
   /* Success overlay */
-  .overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(26,58,92,.88); place-items: center; z-index: 100;
-  }
-  .overlay.show { display: grid; }
-  .success-box {
-    background: var(--surface); border-radius: 10px;
-    padding: 36px 28px; text-align: center;
-    max-width: 320px; margin: 0 16px;
-  }
-  .success-box.type-start { border-top: 4px solid var(--accent); }
-  .success-box.type-end { border-top: 4px solid var(--accent-end); }
-  .success-box .big { font-size: 48px; margin-bottom: 10px; }
-  .success-box h2 { font-size: 18px; font-weight: 900; margin-bottom: 6px; }
-  .success-box.type-start h2 { color: var(--accent); }
-  .success-box.type-end h2 { color: var(--accent-end); }
-  .success-box p { font-size: 12px; color: var(--text-muted); }
-  .report-id { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent); margin-top: 10px; }
-  .close-btn {
-    margin-top: 18px; background: var(--surface2);
-    border: 1px solid var(--border); color: var(--text);
-    border-radius: 6px; padding: 10px 24px; cursor: pointer;
-    font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 700;
-    transition: all .2s;
-  }
-  .close-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .overlay { display:none; position:fixed; inset:0; place-items:center; z-index:200; }
+  .overlay.show { display:grid; }
+  .overlay.blue-bg  { background:rgba(26,58,92,.9); }
+  .overlay.green-bg { background:rgba(26,92,58,.9); }
+  .success-box { background:var(--surface); border-radius:16px; padding:36px 28px; text-align:center; max-width:320px; margin:0 20px; }
+  .success-box.blue-top  { border-top:4px solid var(--blue); }
+  .success-box.green-top { border-top:4px solid var(--green); }
+  .success-box .big { font-size:52px; margin-bottom:10px; }
+  .success-box h2 { font-size:18px; font-weight:900; margin-bottom:8px; }
+  .success-box.blue-top  h2 { color:var(--blue); }
+  .success-box.green-top h2 { color:var(--green); }
+  .success-box p { font-size:12px; color:var(--text-muted); line-height:1.7; }
+  .report-id { font-family:'Space Mono',monospace; font-size:11px; color:var(--blue); margin-top:10px; background:var(--surface2); padding:8px; border-radius:6px; }
+  .overlay-btns { display:flex; gap:8px; margin-top:16px; }
+  .close-btn { flex:1; background:var(--surface2); border:1px solid var(--border); color:var(--text); border-radius:8px; padding:10px; cursor:pointer; font-family:'Noto Sans JP',sans-serif; font-size:13px; font-weight:700; transition:all .2s; }
+  .close-btn:hover { border-color:var(--blue); color:var(--blue); }
+  .home-btn-small { flex:1; background:var(--blue); border:none; color:#fff; border-radius:8px; padding:10px; cursor:pointer; font-family:'Noto Sans JP',sans-serif; font-size:13px; font-weight:700; transition:all .2s; }
+  .home-btn-small:hover { background:var(--blue2); }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <!-- Header -->
-  <div class="header">
-    <div>
+<!-- ===== HOME ===== -->
+<div class="screen active" id="home">
+  <div class="home-inner">
+    <div class="home-logo">
+      <span class="icon">🚚</span>
       <h1>運転日報</h1>
       <p>DRIVER DAILY REPORT</p>
     </div>
-    <div class="header-right" id="headerDate"></div>
-  </div>
+    <div class="home-date" id="homeDate"></div>
 
-  <!-- 共通情報 -->
-  <div class="section">
-    <div class="section-title common">📋 基本情報</div>
-    <div class="grid">
-      <div class="field">
-        <label>配送日 <span class="req">*</span></label>
-        <input type="date" id="deliveryDate" required>
+    <button class="home-btn start" onclick="showScreen('start')">
+      <span class="btn-icon">🚀</span>
+      <div class="btn-text">
+        <h2>業務開始</h2>
+        <p>出発前に入力・送信</p>
       </div>
-      <div class="grid g2">
-        <div class="field">
-          <label>車両番号 <span class="req">*</span></label>
-          <input type="text" id="vehicleNo" placeholder="例：品川300あ1234" required>
-        </div>
-        <div class="field">
-          <label>運送会社名 <span class="req">*</span></label>
-          <input type="text" id="company" placeholder="例：ロジボン" required>
-        </div>
-      </div>
-      <div class="field">
-        <label>運転者名（苗字のみ） <span class="req">*</span></label>
-        <input type="text" id="driverName" placeholder="例：田中" required>
-      </div>
-    </div>
-  </div>
+      <span class="arrow">›</span>
+    </button>
 
-  <!-- 業務開始 -->
-  <div class="section">
-    <div class="section-title start">🚀 業務開始</div>
-    <div class="grid g2">
-      <div class="field">
-        <label>業務開始時間 <span class="req">*</span></label>
-        <input type="time" id="workStart">
+    <button class="home-btn end" onclick="showScreen('end')">
+      <span class="btn-icon">🏁</span>
+      <div class="btn-text">
+        <h2>業務終了</h2>
+        <p>帰着後に入力・送信</p>
       </div>
-      <div class="field">
-        <label>業務開始距離（km）</label>
-        <input type="number" id="kmStart" placeholder="例：12345" min="0">
-      </div>
-    </div>
+      <span class="arrow">›</span>
+    </button>
   </div>
-
-  <!-- 業務終了 -->
-  <div class="section">
-    <div class="section-title end">🏁 業務終了</div>
-    <div class="grid">
-      <div class="grid g2">
-        <div class="field">
-          <label>業務終了時間 <span class="req">*</span></label>
-          <input type="time" id="workEnd">
-        </div>
-        <div class="field">
-          <label>業務終了距離（km）</label>
-          <input type="number" id="kmEnd" placeholder="例：12567" min="0" oninput="calcKm()">
-        </div>
-      </div>
-      <div class="field calc-field">
-        <label>本日走行距離（自動計算）</label>
-        <input type="number" id="kmDrive" placeholder="自動計算" readonly>
-        <div class="calc-note">※ 業務終了距離 − 業務開始距離</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 高速料金 -->
-  <div class="section">
-    <div class="section-title end">🛣️ 高速料金</div>
-    <div class="field">
-      <label>高速料金（円）</label>
-      <input type="number" id="highwayFee" placeholder="例：1200" min="0">
-    </div>
-    <div class="field" style="margin-top:10px">
-      <label>領収書・ETCレシート画像</label>
-      <div class="photo-upload">
-        <input type="file" accept="image/*" multiple onchange="previewPhoto(this,'prev-highway')">
-        <div class="photo-upload-icon">🧾</div>
-        <p><strong>タップして選択</strong></p>
-      </div>
-      <div class="preview-row" id="prev-highway"></div>
-    </div>
-  </div>
-
-  <!-- 駐車場 -->
-  <div class="section">
-    <div class="section-title end">🅿️ 駐車場使用</div>
-    <div class="field">
-      <label>駐車場使用金額（円）</label>
-      <input type="number" id="parkingFee" placeholder="例：300" min="0">
-    </div>
-    <div class="field" style="margin-top:10px">
-      <label>領収書画像</label>
-      <div class="photo-upload">
-        <input type="file" accept="image/*" multiple onchange="previewPhoto(this,'prev-parking')">
-        <div class="photo-upload-icon">📷</div>
-        <p><strong>タップして選択</strong></p>
-      </div>
-      <div class="preview-row" id="prev-parking"></div>
-    </div>
-  </div>
-
-  <!-- 特記事項 -->
-  <div class="section">
-    <div class="section-title end">📝 特記事項・備考</div>
-    <div class="field">
-      <textarea id="notes" placeholder="その日の特記事項、イレギュラー、申し送り事項などを入力"></textarea>
-    </div>
-  </div>
-
-  <!-- 送信ボタン -->
-  <div class="section">
-    <div class="btn-row">
-      <button class="btn-start" id="btnStart" onclick="submitStart()">
-        🚀 業務開始<br>を送信
-      </button>
-      <button class="btn-end" id="btnEnd" onclick="submitEnd()">
-        🏁 業務終了<br>を送信
-      </button>
-    </div>
-  </div>
-
 </div>
 
-<!-- Success Overlay -->
-<div class="overlay" id="successOverlay">
-  <div class="success-box" id="successBox">
-    <div class="big" id="successIcon"></div>
-    <h2 id="successTitle"></h2>
-    <p id="successMsg"></p>
-    <div class="report-id" id="reportId"></div>
-    <button class="close-btn" onclick="closeOverlay()">閉じる</button>
+<!-- ===== 業務開始フォーム ===== -->
+<div class="screen form-screen" id="screen-start">
+  <div class="form-header start">
+    <button class="back-btn" onclick="showScreen('home')">‹</button>
+    <div class="form-header-text">
+      <h2>🚀 業務開始</h2>
+      <p>START OF WORK</p>
+    </div>
+  </div>
+  <div class="form-body">
+    <div class="form-inner">
+
+      <div class="section">
+        <div class="section-title gray">📋 基本情報</div>
+        <div class="grid">
+          <div class="field">
+            <label>配送日 <span class="req">*</span></label>
+            <input type="date" id="s-date" required>
+          </div>
+          <div class="grid g2">
+            <div class="field">
+              <label>車両番号 <span class="req">*</span></label>
+              <input type="text" id="s-vehicle" placeholder="品川300あ1234" required>
+            </div>
+            <div class="field">
+              <label>運送会社名 <span class="req">*</span></label>
+              <input type="text" id="s-company" placeholder="例：ロジボン" required>
+            </div>
+          </div>
+          <div class="field">
+            <label>運転者名（苗字のみ） <span class="req">*</span></label>
+            <input type="text" id="s-driver" placeholder="例：田中" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title blue">🕐 業務開始</div>
+        <div class="grid g2">
+          <div class="field">
+            <label>業務開始時間 <span class="req">*</span></label>
+            <input type="time" id="s-start-time" required>
+          </div>
+          <div class="field">
+            <label>業務開始距離（km）</label>
+            <input type="number" id="s-km-start" placeholder="例：12345" min="0">
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <button class="btn-submit blue" id="s-btn" onclick="submitStart()">🚀 業務開始を送信</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== 業務終了フォーム ===== -->
+<div class="screen form-screen" id="screen-end">
+  <div class="form-header end">
+    <button class="back-btn" onclick="showScreen('home')">‹</button>
+    <div class="form-header-text">
+      <h2>🏁 業務終了</h2>
+      <p>END OF WORK</p>
+    </div>
+  </div>
+  <div class="form-body">
+    <div class="form-inner">
+
+      <div class="section">
+        <div class="section-title gray">📋 基本情報</div>
+        <div class="grid">
+          <div class="field">
+            <label>配送日 <span class="req">*</span></label>
+            <input type="date" id="e-date" required>
+          </div>
+          <div class="grid g2">
+            <div class="field">
+              <label>車両番号 <span class="req">*</span></label>
+              <input type="text" id="e-vehicle" placeholder="品川300あ1234" required>
+            </div>
+            <div class="field">
+              <label>運送会社名 <span class="req">*</span></label>
+              <input type="text" id="e-company" placeholder="例：ロジボン" required>
+            </div>
+          </div>
+          <div class="field">
+            <label>運転者名（苗字のみ） <span class="req">*</span></label>
+            <input type="text" id="e-driver" placeholder="例：田中" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title green">🏁 業務終了</div>
+        <div class="grid">
+          <div class="grid g2">
+            <div class="field">
+              <label>業務終了時間 <span class="req">*</span></label>
+              <input type="time" id="e-end-time" required>
+            </div>
+            <div class="field">
+              <label>業務終了距離（km）</label>
+              <input type="number" id="e-km-end" placeholder="例：12567" min="0" oninput="calcKm()">
+            </div>
+          </div>
+          <div class="grid g2">
+            <div class="field">
+              <label>業務開始距離（km）</label>
+              <input type="number" id="e-km-start" placeholder="例：12345" min="0" oninput="calcKm()">
+            </div>
+            <div class="field calc-field">
+              <label>走行距離（自動計算）</label>
+              <input type="number" id="e-km-drive" placeholder="自動計算" readonly>
+              <div class="calc-note">※ 終了 − 開始距離</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title green">🛣️ 高速料金</div>
+        <div class="field">
+          <label>高速料金（円）</label>
+          <input type="number" id="e-highway-fee" placeholder="例：1200" min="0">
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label>領収書・ETCレシート画像</label>
+          <div class="photo-upload">
+            <input type="file" accept="image/*" multiple onchange="previewPhoto(this,'prev-highway')">
+            <div class="photo-upload-icon">🧾</div>
+            <p><strong>タップして選択</strong></p>
+          </div>
+          <div class="preview-row" id="prev-highway"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title green">🅿️ 駐車場使用</div>
+        <div class="field">
+          <label>駐車場使用金額（円）</label>
+          <input type="number" id="e-parking-fee" placeholder="例：300" min="0">
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label>領収書画像</label>
+          <div class="photo-upload">
+            <input type="file" accept="image/*" multiple onchange="previewPhoto(this,'prev-parking')">
+            <div class="photo-upload-icon">📷</div>
+            <p><strong>タップして選択</strong></p>
+          </div>
+          <div class="preview-row" id="prev-parking"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title green">📝 特記事項・備考</div>
+        <div class="field">
+          <textarea id="e-notes" placeholder="特記事項、イレギュラー、申し送り事項などを入力"></textarea>
+        </div>
+      </div>
+
+      <div class="section">
+        <button class="btn-submit green" id="e-btn" onclick="submitEnd()">🏁 業務終了を送信</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Success: 業務開始 -->
+<div class="overlay blue-bg" id="overlay-start">
+  <div class="success-box blue-top">
+    <div class="big">🚀</div>
+    <h2>業務開始を送信しました！</h2>
+    <p>業務終了時にトップ画面から<br>「業務終了」を選んで送信してください。</p>
+    <div class="report-id" id="s-report-id"></div>
+    <div class="overlay-btns">
+      <button class="close-btn" onclick="closeOverlay('start')">続けて入力</button>
+      <button class="home-btn-small" onclick="goHome('start')">🏠 トップへ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Success: 業務終了 -->
+<div class="overlay green-bg" id="overlay-end">
+  <div class="success-box green-top">
+    <div class="big">✅</div>
+    <h2>業務終了を送信しました！</h2>
+    <p>本日の日報が完成しました。<br>お疲れ様でした！</p>
+    <div class="report-id" id="e-report-id"></div>
+    <div class="overlay-btns">
+      <button class="close-btn" onclick="closeOverlay('end')">続けて入力</button>
+      <button class="home-btn-small" onclick="goHome('end')">🏠 トップへ</button>
+    </div>
   </div>
 </div>
 
 <script>
   const GAS_URL = 'https://script.google.com/macros/s/AKfycbySfHDPqnWrWHhRWE2ibiX2iqBP5DWpuzUHSxjyoO90Xav8pOYnkaU9ueg8JXwZqCNWRw/exec';
 
-  // ヘッダー日付
+  // 今日の日付
   const now = new Date();
   const wdays = ['日','月','火','水','木','金','土'];
-  document.getElementById('headerDate').innerHTML =
-    `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日（${wdays[now.getDay()]}）<br>
-     <span style="font-size:10px;opacity:.7">${now.toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</span>`;
+  const todayStr = now.toISOString().split('T')[0];
+  document.getElementById('homeDate').textContent =
+    `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日（${wdays[now.getDay()]}）`;
+  document.getElementById('s-date').value = todayStr;
+  document.getElementById('e-date').value = todayStr;
 
-  // 今日の日付をデフォルト
-  document.getElementById('deliveryDate').value = now.toISOString().split('T')[0];
+  // 画面切り替え
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const target = id === 'home' ? document.getElementById('home') : document.getElementById('screen-' + id);
+    target.classList.add('active');
+    window.scrollTo(0,0);
+  }
 
   // 走行距離自動計算
   function calcKm() {
-    const s = parseFloat(document.getElementById('kmStart').value) || 0;
-    const e = parseFloat(document.getElementById('kmEnd').value) || 0;
-    document.getElementById('kmDrive').value = (s > 0 && e > 0) ? Math.max(0, e - s) : '';
-  }
-
-  // 共通バリデーション
-  function validateCommon() {
-    const date    = document.getElementById('deliveryDate').value;
-    const vehicle = document.getElementById('vehicleNo').value.trim();
-    const company = document.getElementById('company').value.trim();
-    const driver  = document.getElementById('driverName').value.trim();
-    if (!date || !vehicle || !company || !driver) {
-      alert('基本情報（配送日・車両番号・運送会社名・運転者名）を入力してください。');
-      return null;
-    }
-    const dateStr  = date.replace(/-/g, '');
-    const reportId = company + '-' + vehicle + '-' + dateStr;
-    return { date, vehicle, company, driver, reportId };
-  }
-
-  // base64変換
-  function toBase64(file) {
-    return new Promise(resolve => {
-      const r = new FileReader();
-      r.onload = ev => resolve(ev.target.result);
-      r.readAsDataURL(file);
-    });
-  }
-  function toBase64Multi(files) {
-    return Promise.all([...files].map(f => toBase64(f)));
+    const s = parseFloat(document.getElementById('e-km-start').value) || 0;
+    const e = parseFloat(document.getElementById('e-km-end').value) || 0;
+    document.getElementById('e-km-drive').value = (s > 0 && e > 0) ? Math.max(0, e - s) : '';
   }
 
   // 写真プレビュー
@@ -353,103 +415,105 @@
     const c = document.getElementById(id);
     [...input.files].forEach(f => {
       const r = new FileReader();
-      r.onload = e => { const img = document.createElement('img'); img.src = e.target.result; c.appendChild(img); };
+      r.onload = ev => { const img = document.createElement('img'); img.src = ev.target.result; c.appendChild(img); };
       r.readAsDataURL(f);
     });
   }
 
+  // base64変換
+  function toBase64(file) {
+    return new Promise(resolve => { const r = new FileReader(); r.onload = ev => resolve(ev.target.result); r.readAsDataURL(file); });
+  }
+  function toBase64Multi(files) { return Promise.all([...files].map(f => toBase64(f))); }
+
   // 業務開始 送信
   async function submitStart() {
-    const common = validateCommon();
-    if (!common) return;
-    const workStart = document.getElementById('workStart').value;
-    if (!workStart) { alert('業務開始時間を入力してください。'); return; }
+    const date    = document.getElementById('s-date').value;
+    const vehicle = document.getElementById('s-vehicle').value.trim();
+    const company = document.getElementById('s-company').value.trim();
+    const driver  = document.getElementById('s-driver').value.trim();
+    const start   = document.getElementById('s-start-time').value;
+    if (!date || !vehicle || !company || !driver) { alert('基本情報をすべて入力してください。'); return; }
+    if (!start) { alert('業務開始時間を入力してください。'); return; }
 
-    const btn = document.getElementById('btnStart');
-    btn.textContent = '送信中...'; btn.disabled = true;
+    const btn = document.getElementById('s-btn');
+    btn.textContent = '📡 送信中...'; btn.disabled = true;
 
+    const reportId = company + '-' + vehicle + '-' + date.replace(/-/g,'');
     const payload = {
-      type:          'start',
-      report_id:     common.reportId,
-      delivery_date: common.date,
-      vehicle_no:    common.vehicle,
-      company:       common.company,
-      driver_name:   common.driver,
-      work_start:    workStart,
-      km_start:      document.getElementById('kmStart').value,
+      type:'start', report_id:reportId,
+      delivery_date:date, vehicle_no:vehicle, company, driver_name:driver,
+      work_start:start,
+      km_start:document.getElementById('s-km-start').value,
     };
 
-    await send(payload, 'start');
-    btn.innerHTML = '🚀 業務開始<br>を送信'; btn.disabled = false;
+    try {
+      const res = await fetch(GAS_URL, { method:'POST', body:JSON.stringify(payload) });
+      const json = await res.json();
+      if (json.result !== 'success') throw new Error(json.message);
+      document.getElementById('s-report-id').textContent = '日報ID: ' + reportId;
+      document.getElementById('overlay-start').classList.add('show');
+    } catch(err) {
+      alert('送信エラー: ' + err.message);
+    } finally {
+      btn.textContent = '🚀 業務開始を送信'; btn.disabled = false;
+    }
   }
 
   // 業務終了 送信
   async function submitEnd() {
-    const common = validateCommon();
-    if (!common) return;
-    const workEnd = document.getElementById('workEnd').value;
-    if (!workEnd) { alert('業務終了時間を入力してください。'); return; }
+    const date    = document.getElementById('e-date').value;
+    const vehicle = document.getElementById('e-vehicle').value.trim();
+    const company = document.getElementById('e-company').value.trim();
+    const driver  = document.getElementById('e-driver').value.trim();
+    const end     = document.getElementById('e-end-time').value;
+    if (!date || !vehicle || !company || !driver) { alert('基本情報をすべて入力してください。'); return; }
+    if (!end) { alert('業務終了時間を入力してください。'); return; }
 
-    const btn = document.getElementById('btnEnd');
-    btn.textContent = '送信中...'; btn.disabled = true;
+    const btn = document.getElementById('e-btn');
+    btn.textContent = '📡 送信中...'; btn.disabled = true;
 
     const highwayInput = document.querySelector('input[onchange*="prev-highway"]');
     const parkingInput = document.querySelector('input[onchange*="prev-parking"]');
     const fileHighway  = highwayInput?.files.length ? await toBase64Multi(highwayInput.files) : [];
     const fileParking  = parkingInput?.files.length ? await toBase64Multi(parkingInput.files) : [];
 
+    const reportId = company + '-' + vehicle + '-' + date.replace(/-/g,'');
     const payload = {
-      type:          'end',
-      report_id:     common.reportId,
-      delivery_date: common.date,
-      vehicle_no:    common.vehicle,
-      company:       common.company,
-      driver_name:   common.driver,
-      work_end:      workEnd,
-      km_end:        document.getElementById('kmEnd').value,
-      km_drive:      document.getElementById('kmDrive').value,
-      highway_fee:   document.getElementById('highwayFee').value,
-      parking_fee:   document.getElementById('parkingFee').value,
-      notes:         document.getElementById('notes').value,
-      file_highway:  fileHighway,
-      file_parking:  fileParking,
+      type:'end', report_id:reportId,
+      delivery_date:date, vehicle_no:vehicle, company, driver_name:driver,
+      work_end:end,
+      km_start:document.getElementById('e-km-start').value,
+      km_end:document.getElementById('e-km-end').value,
+      km_drive:document.getElementById('e-km-drive').value,
+      highway_fee:document.getElementById('e-highway-fee').value,
+      parking_fee:document.getElementById('e-parking-fee').value,
+      notes:document.getElementById('e-notes').value,
+      file_highway:fileHighway, file_parking:fileParking,
     };
 
-    await send(payload, 'end');
-    btn.innerHTML = '🏁 業務終了<br>を送信'; btn.disabled = false;
-  }
-
-  // 送信共通処理
-  async function send(payload, type) {
     try {
-      if (!GAS_URL.includes('★')) {
-        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
-        const json = await res.json();
-        if (json.result !== 'success') throw new Error(json.message || '送信エラー');
-      }
-      showSuccess(type, payload.report_id);
+      const res = await fetch(GAS_URL, { method:'POST', body:JSON.stringify(payload) });
+      const json = await res.json();
+      if (json.result !== 'success') throw new Error(json.message);
+      document.getElementById('e-report-id').textContent = '日報ID: ' + reportId;
+      document.getElementById('overlay-end').classList.add('show');
     } catch(err) {
-      if (GAS_URL.includes('★')) {
-        showSuccess(type, payload.report_id + '（テスト）');
-      } else {
-        alert('送信エラー: ' + err.message);
-      }
+      alert('送信エラー: ' + err.message);
+    } finally {
+      btn.textContent = '🏁 業務終了を送信'; btn.disabled = false;
     }
   }
 
-  // 完了表示
-  function showSuccess(type, reportId) {
-    const box = document.getElementById('successBox');
-    box.className = 'success-box type-' + type;
-    document.getElementById('successIcon').textContent  = type === 'start' ? '🚀' : '✅';
-    document.getElementById('successTitle').textContent = type === 'start' ? '業務開始を送信しました！' : '業務終了を送信しました！';
-    document.getElementById('successMsg').textContent   = type === 'start' ? '業務終了時に再度フォームを開いて送信してください。' : '本日の日報が完成しました。お疲れ様でした！';
-    document.getElementById('reportId').textContent     = '日報ID: ' + reportId;
-    document.getElementById('successOverlay').classList.add('show');
+  // オーバーレイを閉じる
+  function closeOverlay(type) {
+    document.getElementById('overlay-' + type).classList.remove('show');
   }
 
-  function closeOverlay() {
-    document.getElementById('successOverlay').classList.remove('show');
+  // トップへ戻る
+  function goHome(type) {
+    closeOverlay(type);
+    showScreen('home');
   }
 </script>
 </body>
