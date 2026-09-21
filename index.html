@@ -11,9 +11,10 @@
     --surface: #ffffff;
     --surface2: #f0efe9;
     --border: #d6d3c8;
-    --border-dark: #b0aa9a;
     --accent: #1a3a5c;
     --accent2: #2d6a9f;
+    --accent-end: #1a5c3a;
+    --accent-end2: #2d9f6a;
     --text: #1c1c1c;
     --text-muted: #7a7669;
     --success: #2e7d52;
@@ -31,9 +32,53 @@
   }
   .container { max-width: 680px; margin: 0 auto; }
 
+  /* Page switching */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* Progress bar */
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 16px;
+  }
+  .progress-step {
+    flex: 1;
+    text-align: center;
+    padding: 10px 6px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 6px;
+    transition: all .3s;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 2px solid var(--border);
+  }
+  .progress-step.active-start {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .progress-step.active-end {
+    background: var(--accent-end);
+    color: #fff;
+    border-color: var(--accent-end);
+  }
+  .progress-step.done {
+    background: var(--surface2);
+    color: var(--text-muted);
+    border-color: var(--border);
+  }
+  .progress-arrow {
+    font-size: 16px;
+    color: var(--border);
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+
   /* Header */
   .header {
-    background: var(--accent);
     color: #fff;
     border-radius: var(--radius) var(--radius) 0 0;
     padding: 20px 24px 16px;
@@ -42,173 +87,75 @@
     justify-content: space-between;
     gap: 12px;
   }
-  .header-left h1 {
-    font-size: 26px;
-    font-weight: 900;
-    letter-spacing: .12em;
-  }
-  .header-left p {
-    font-size: 11px;
-    opacity: .65;
-    font-family: 'Space Mono', monospace;
-    margin-top: 3px;
-    letter-spacing: .06em;
-  }
-  .header-right {
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    opacity: .8;
-    text-align: right;
-    flex-shrink: 0;
-  }
+  .header.start { background: var(--accent); }
+  .header.end { background: var(--accent-end); }
+  .header h1 { font-size: 22px; font-weight: 900; letter-spacing: .1em; }
+  .header p { font-size: 11px; opacity: .65; font-family: 'Space Mono', monospace; margin-top: 2px; }
+  .header-right { font-family: 'Space Mono', monospace; font-size: 11px; opacity: .8; text-align: right; flex-shrink: 0; }
 
-  /* Sections */
+  /* Section */
   .section {
     background: var(--surface);
     border: 1px solid var(--border);
     border-top: none;
     padding: 18px 20px;
   }
-  .section:last-of-type {
-    border-radius: 0 0 var(--radius) var(--radius);
-    margin-bottom: 16px;
-  }
+  .section:last-of-type { border-radius: 0 0 var(--radius) var(--radius); margin-bottom: 16px; }
   .section-title {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .15em;
-    color: var(--accent);
-    text-transform: uppercase;
-    font-family: 'Space Mono', monospace;
-    padding-bottom: 10px;
-    margin-bottom: 14px;
-    border-bottom: 2px solid var(--accent);
-    display: flex;
-    align-items: center;
-    gap: 7px;
+    font-size: 10px; font-weight: 700; letter-spacing: .15em;
+    text-transform: uppercase; font-family: 'Space Mono', monospace;
+    display: flex; align-items: center; gap: 7px;
+    padding-bottom: 10px; margin-bottom: 14px;
+    border-bottom: 2px solid;
   }
+  .section-title.start { color: var(--accent); border-color: var(--accent); }
+  .section-title.end { color: var(--accent-end); border-color: var(--accent-end); }
 
-  /* Grid layouts */
+  /* Grid */
   .grid { display: grid; gap: 12px; }
   .g2 { grid-template-columns: 1fr 1fr; }
-  .g3 { grid-template-columns: 1fr 1fr 1fr; }
-  .g4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
-  @media(max-width:500px) {
-    .g2,.g3,.g4 { grid-template-columns: 1fr 1fr; }
-  }
-  @media(max-width:360px) {
-    .g3,.g4 { grid-template-columns: 1fr 1fr; }
-  }
+  @media(max-width:480px) { .g2 { grid-template-columns: 1fr; } }
 
   /* Field */
   .field { display: flex; flex-direction: column; gap: 4px; }
-  .field label {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--text-muted);
-    letter-spacing: .06em;
-    text-transform: uppercase;
-  }
+  .field label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: .06em; text-transform: uppercase; }
   .req { color: var(--danger); margin-left: 2px; }
 
   input[type=text], input[type=date], input[type=time], input[type=number],
-  select, textarea {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    color: var(--text);
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 14px;
-    padding: 9px 11px;
-    width: 100%;
-    outline: none;
-    transition: border-color .15s, box-shadow .15s;
-    -webkit-appearance: none;
-    appearance: none;
+  textarea {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 5px; color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif; font-size: 14px;
+    padding: 9px 11px; width: 100%;
+    outline: none; transition: border-color .15s, box-shadow .15s;
+    -webkit-appearance: none; appearance: none;
   }
-  select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%237a7669' d='M5 6L0 0h10z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    padding-right: 30px;
-  }
-  input:focus, select:focus, textarea:focus {
+  input:focus, textarea:focus {
     border-color: var(--accent2);
     box-shadow: 0 0 0 3px rgba(45,106,159,.12);
     background: #fff;
   }
   textarea { resize: vertical; min-height: 72px; }
-  select option { background: #fff; }
 
-  /* Divider label */
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 16px 0 10px;
-    font-size: 10px;
+  /* Auto calc field */
+  .calc-field input {
+    background: #e8f4e8;
+    border-color: var(--accent-end);
     font-weight: 700;
-    color: var(--text-muted);
-    letter-spacing: .1em;
+    color: var(--accent-end);
   }
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* Distance row */
-  .dist-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-  }
-  @media(max-width:480px) {
-    .dist-row { grid-template-columns: 1fr 1fr; }
-  }
-
-  /* Time pair */
-  .time-pair {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  .time-pair-label {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--text-muted);
-    letter-spacing: .06em;
-    margin-bottom: 4px;
-  }
-
-  /* Location */
-  .location-box {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 10px 12px;
-    font-size: 12px;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .calc-label {
+    font-size: 10px; color: var(--accent-end);
     font-family: 'Space Mono', monospace;
+    margin-top: 3px;
   }
-  .location-box.ok { border-color: var(--success); color: var(--success); background: #f0faf4; }
-  .location-box.err { border-color: var(--danger); color: var(--danger); background: #fdf2f1; }
 
   /* Photo upload */
   .photo-upload {
-    border: 2px dashed var(--border);
-    border-radius: 6px;
-    padding: 16px;
-    text-align: center;
-    cursor: pointer;
-    background: var(--surface2);
-    position: relative;
-    transition: all .2s;
-    margin-bottom: 8px;
+    border: 2px dashed var(--border); border-radius: 6px;
+    padding: 16px; text-align: center; cursor: pointer;
+    background: var(--surface2); position: relative;
+    transition: all .2s; margin-bottom: 8px;
   }
   .photo-upload:hover { border-color: var(--accent2); background: #eef4fa; }
   .photo-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
@@ -218,144 +165,161 @@
   .preview-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
   .preview-row img { width: 72px; height: 72px; object-fit: cover; border-radius: 6px; border: 2px solid var(--border); }
 
-  /* Submit */
-  .submit-wrap { padding: 0 0 8px; }
-  .submit-btn {
-    width: 100%;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    padding: 15px;
-    font-size: 15px;
-    font-weight: 900;
+  /* Buttons */
+  .btn-next {
+    width: 100%; background: var(--accent); color: #fff;
+    border: none; border-radius: var(--radius); padding: 15px;
+    font-size: 15px; font-weight: 900;
     font-family: 'Noto Sans JP', sans-serif;
-    cursor: pointer;
-    letter-spacing: .08em;
+    cursor: pointer; letter-spacing: .08em;
     transition: all .2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .submit-btn:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,58,92,.25); }
-  .submit-btn:active { transform: none; }
-  .submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+  .btn-next:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,58,92,.25); }
 
-  /* Success overlay */
+  .btn-submit {
+    width: 100%; background: var(--accent-end); color: #fff;
+    border: none; border-radius: var(--radius); padding: 15px;
+    font-size: 15px; font-weight: 900;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer; letter-spacing: .08em;
+    transition: all .2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-submit:hover { background: var(--accent-end2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,92,58,.25); }
+  .btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+  .btn-back {
+    width: 100%; background: var(--surface2); color: var(--text-muted);
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;
+    font-size: 13px; font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer; margin-bottom: 10px;
+    transition: all .2s;
+  }
+  .btn-back:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Success */
   .overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(26,58,92,.88);
-    place-items: center;
-    z-index: 100;
+    display: none; position: fixed; inset: 0;
+    background: rgba(26,58,92,.88); place-items: center; z-index: 100;
   }
   .overlay.show { display: grid; }
   .success-box {
-    background: var(--surface);
-    border-top: 4px solid var(--success);
-    border-radius: 10px;
-    padding: 40px 32px;
-    text-align: center;
-    max-width: 320px;
-    margin: 0 16px;
+    background: var(--surface); border-top: 4px solid var(--success);
+    border-radius: 10px; padding: 40px 32px; text-align: center;
+    max-width: 320px; margin: 0 16px;
   }
   .success-box .big { font-size: 48px; margin-bottom: 10px; }
   .success-box h2 { font-size: 18px; font-weight: 900; color: var(--success); margin-bottom: 6px; }
   .success-box p { font-size: 12px; color: var(--text-muted); }
   .report-id { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent); margin-top: 10px; }
   .new-btn {
-    margin-top: 18px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    border-radius: 6px;
-    padding: 10px 24px;
-    cursor: pointer;
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
+    margin-top: 18px; background: var(--surface2);
+    border: 1px solid var(--border); color: var(--text);
+    border-radius: 6px; padding: 10px 24px; cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 700;
     transition: all .2s;
   }
   .new-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  .hidden { display: none !important; }
-  .full { grid-column: 1 / -1; }
 </style>
 </head>
 <body>
 <div class="container">
 
-  <form id="reportForm">
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-step active-start" id="prog-start">🚀 業務開始</div>
+    <div class="progress-arrow">›</div>
+    <div class="progress-step" id="prog-end">🏁 業務終了</div>
+  </div>
 
-    <!-- Header -->
-    <div class="header">
-      <div class="header-left">
-        <h1>運転日報</h1>
-        <p>DRIVER DAILY REPORT</p>
+  <!-- ===== PAGE 1: 業務開始 ===== -->
+  <div class="page active" id="page-start">
+    <div class="header start">
+      <div>
+        <h1>業務開始</h1>
+        <p>START OF WORK · 運転日報</p>
       </div>
       <div class="header-right" id="headerDate"></div>
     </div>
 
-    <!-- 1. 基本情報 -->
     <div class="section">
-      <div class="section-title">📋 基本情報</div>
-      <div class="field">
-        <label>配送日 <span class="req">*</span></label>
-        <input type="date" name="delivery_date" id="deliveryDate" required>
-      </div>
-      <div class="grid g2" style="margin-top:12px">
+      <div class="section-title start">📋 基本情報</div>
+      <div class="grid">
         <div class="field">
-          <label>車輌番号 <span class="req">*</span></label>
-          <input type="text" name="vehicle_no" placeholder="例：品川300あ1234" required>
+          <label>配送日 <span class="req">*</span></label>
+          <input type="date" name="delivery_date" id="deliveryDate" required>
+        </div>
+        <div class="grid g2">
+          <div class="field">
+            <label>車両番号 <span class="req">*</span></label>
+            <input type="text" name="vehicle_no" id="vehicleNo" placeholder="例：品川300あ1234" required>
+          </div>
+          <div class="field">
+            <label>運送会社名 <span class="req">*</span></label>
+            <input type="text" name="company" id="company" placeholder="例：ロジボン" required>
+          </div>
         </div>
         <div class="field">
-          <label>運送業者名</label>
-          <input type="text" name="company" placeholder="例：ロジボン">
-        </div>
-        <div class="field" style="grid-column:1/-1">
           <label>運転者名（苗字のみ） <span class="req">*</span></label>
-          <input type="text" name="driver_name" placeholder="例：田中" required>
+          <input type="text" name="driver_name" id="driverName" placeholder="例：田中" required>
         </div>
       </div>
     </div>
 
-    <!-- 2. 走行距離 -->
     <div class="section">
-      <div class="section-title">🚗 走行距離（km）</div>
-      <div class="field">
-        <label>本日の走行距離</label>
-        <input type="number" name="km_drive" placeholder="0" min="0">
-      </div>
-    </div>
-
-    <!-- 3. 業務時間 -->
-    <div class="section">
-      <div class="section-title">🕐 業務時間</div>
-
+      <div class="section-title start">🕐 業務開始</div>
       <div class="grid g2">
         <div class="field">
-          <div class="time-pair-label">業務開始</div>
-          <input type="time" name="work_start">
+          <label>業務開始時間 <span class="req">*</span></label>
+          <input type="time" name="work_start" id="workStart" required>
         </div>
         <div class="field">
-          <div class="time-pair-label">業務終了</div>
-          <input type="time" name="work_end">
+          <label>業務開始距離（km）</label>
+          <input type="number" name="km_start" id="kmStart" placeholder="例：12345" min="0">
         </div>
       </div>
     </div>
 
-    <!-- 4. 特記事項 -->
     <div class="section">
-      <div class="section-title">📝 特記事項・備考</div>
-      <div class="field">
-        <textarea name="notes" placeholder="その日の特記事項、イレギュラー、申し送り事項などを入力"></textarea>
+      <button type="button" class="btn-next" onclick="goToEnd()">次へ　業務終了の入力へ →</button>
+    </div>
+  </div>
+
+  <!-- ===== PAGE 2: 業務終了 ===== -->
+  <div class="page" id="page-end">
+    <div class="header end">
+      <div>
+        <h1>業務終了</h1>
+        <p>END OF WORK · 運転日報</p>
+      </div>
+      <div class="header-right" id="summaryBadge"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title end">🏁 業務終了</div>
+      <div class="grid">
+        <div class="grid g2">
+          <div class="field">
+            <label>業務終了時間 <span class="req">*</span></label>
+            <input type="time" name="work_end" id="workEnd" required>
+          </div>
+          <div class="field">
+            <label>業務終了距離（km）</label>
+            <input type="number" name="km_end" id="kmEnd" placeholder="例：12567" min="0" oninput="calcKm()">
+          </div>
+        </div>
+        <div class="field calc-field">
+          <label>本日走行距離（自動計算）</label>
+          <input type="number" name="km_drive" id="kmDrive" placeholder="自動計算" readonly>
+          <div class="calc-label">※ 業務終了距離 − 業務開始距離</div>
+        </div>
       </div>
     </div>
 
-    <!-- 5. 高速料金 -->
     <div class="section">
-      <div class="section-title">🛣️ 高速料金</div>
+      <div class="section-title end">🛣️ 高速料金</div>
       <div class="field">
         <label>高速料金（円）</label>
         <input type="number" name="highway_fee" placeholder="例：1200" min="0">
@@ -371,9 +335,8 @@
       </div>
     </div>
 
-    <!-- 6. 駐車場 -->
     <div class="section">
-      <div class="section-title">🅿️ 駐車場使用</div>
+      <div class="section-title end">🅿️ 駐車場使用</div>
       <div class="field">
         <label>駐車場使用金額（円）</label>
         <input type="number" name="parking_fee" placeholder="例：300" min="0">
@@ -389,14 +352,19 @@
       </div>
     </div>
 
-
-
-    <!-- Submit -->
-    <div class="section submit-wrap">
-      <button type="submit" class="submit-btn" id="submitBtn">📤 日報を送信</button>
+    <div class="section">
+      <div class="section-title end">📝 特記事項・備考</div>
+      <div class="field">
+        <textarea name="notes" placeholder="その日の特記事項、イレギュラー、申し送り事項などを入力"></textarea>
+      </div>
     </div>
 
-  </form>
+    <div class="section">
+      <button type="button" class="btn-back" onclick="goToStart()">← 業務開始の入力に戻る</button>
+      <button type="button" class="btn-submit" id="submitBtn" onclick="submitForm()">📤 日報を送信</button>
+    </div>
+  </div>
+
 </div>
 
 <!-- Success -->
@@ -411,23 +379,68 @@
 </div>
 
 <script>
-  // ===== GAS URL（デプロイ後に差し替え） =====
   const GAS_URL = 'https://script.google.com/macros/s/AKfycbySfHDPqnWrWHhRWE2ibiX2iqBP5DWpuzUHSxjyoO90Xav8pOYnkaU9ueg8JXwZqCNWRw/exec';
 
-  // --- ヘッダー日付 ---
+  // 日付バッジ
   const now = new Date();
   const wdays = ['日','月','火','水','木','金','土'];
   document.getElementById('headerDate').innerHTML =
     `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日（${wdays[now.getDay()]}）<br>
      <span style="font-size:10px;opacity:.7">${now.toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</span>`;
 
-  // --- 配送日（今日の日付をデフォルト設定） ---
-  const deliveryDate = document.getElementById('deliveryDate');
-  deliveryDate.value = now.toISOString().split('T')[0];
+  // 今日の日付をデフォルト設定
+  document.getElementById('deliveryDate').value = now.toISOString().split('T')[0];
 
+  // 走行距離自動計算
+  function calcKm() {
+    const start = parseFloat(document.getElementById('kmStart').value) || 0;
+    const end   = parseFloat(document.getElementById('kmEnd').value) || 0;
+    if (start > 0 && end > 0) {
+      document.getElementById('kmDrive').value = Math.max(0, end - start);
+    } else {
+      document.getElementById('kmDrive').value = '';
+    }
+  }
 
+  // ページ1 → ページ2
+  function goToEnd() {
+    const date    = document.getElementById('deliveryDate').value;
+    const vehicle = document.getElementById('vehicleNo').value;
+    const company = document.getElementById('company').value;
+    const driver  = document.getElementById('driverName').value;
+    const start   = document.getElementById('workStart').value;
 
-  // --- 写真プレビュー ---
+    if (!date || !vehicle || !company || !driver || !start) {
+      alert('必須項目（配送日・車両番号・運送会社名・運転者名・業務開始時間）を入力してください。');
+      return;
+    }
+
+    // サマリーバッジ更新
+    document.getElementById('summaryBadge').innerHTML =
+      `${company}<br><span style="font-size:10px;opacity:.7">${vehicle} · ${driver}</span>`;
+
+    // プログレス更新
+    document.getElementById('prog-start').classList.remove('active-start');
+    document.getElementById('prog-start').classList.add('done');
+    document.getElementById('prog-end').classList.add('active-end');
+
+    document.getElementById('page-start').classList.remove('active');
+    document.getElementById('page-end').classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // ページ2 → ページ1
+  function goToStart() {
+    document.getElementById('prog-end').classList.remove('active-end');
+    document.getElementById('prog-start').classList.remove('done');
+    document.getElementById('prog-start').classList.add('active-start');
+
+    document.getElementById('page-end').classList.remove('active');
+    document.getElementById('page-start').classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // 写真プレビュー
   function previewPhoto(input, id) {
     const c = document.getElementById(id);
     [...input.files].forEach(f => {
@@ -437,13 +450,14 @@
     });
   }
 
-  // --- 送信 ---
-  document.getElementById('reportForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+  // 送信
+  async function submitForm() {
+    const workEnd = document.getElementById('workEnd').value;
+    if (!workEnd) { alert('業務終了時間を入力してください。'); return; }
+
     const btn = document.getElementById('submitBtn');
     btn.textContent = '📡 送信中...'; btn.disabled = true;
 
-    // base64変換ヘルパー
     function toBase64(file) {
       return new Promise(resolve => {
         if (!file) return resolve('');
@@ -456,30 +470,30 @@
       return Promise.all([...files].map(f => toBase64(f)));
     }
 
-    const fd = new FormData(this);
-    const company = (fd.get('company') || 'RPT').trim();
-    const vehicleNo = (fd.get('vehicle_no') || '').trim();
-    const deliveryDate = (fd.get('delivery_date') || '').replace(/-/g, '');
-    const reportId = company + '-' + vehicleNo + '-' + deliveryDate;
-
-    // 画像ファイル取得
     const highwayInput = document.querySelector('input[onchange*="prev-highway"]');
     const parkingInput = document.querySelector('input[onchange*="prev-parking"]');
-    const fileHighway = highwayInput?.files.length ? await toBase64Multi(highwayInput.files) : [];
-    const fileParking = parkingInput?.files.length ? await toBase64Multi(parkingInput.files) : [];
+    const fileHighway  = highwayInput?.files.length ? await toBase64Multi(highwayInput.files) : [];
+    const fileParking  = parkingInput?.files.length ? await toBase64Multi(parkingInput.files) : [];
+
+    const company    = document.getElementById('company').value.trim();
+    const vehicleNo  = document.getElementById('vehicleNo').value.trim();
+    const dateStr    = document.getElementById('deliveryDate').value.replace(/-/g, '');
+    const reportId   = company + '-' + vehicleNo + '-' + dateStr;
 
     const payload = {
-      report_id:     reportId,
-      delivery_date: fd.get('delivery_date'),
-      vehicle_no:    fd.get('vehicle_no'),
-      company:       fd.get('company'),
-      driver_name:   fd.get('driver_name'),
-      km_drive:     fd.get('km_drive'),
-      work_start:   fd.get('work_start'),
-      work_end:     fd.get('work_end'),
-      notes:        fd.get('notes'),
-      highway_fee:  fd.get('highway_fee'),
-      parking_fee:  fd.get('parking_fee'),
+      report_id:    reportId,
+      delivery_date: document.getElementById('deliveryDate').value,
+      vehicle_no:   vehicleNo,
+      company:      company,
+      driver_name:  document.getElementById('driverName').value,
+      work_start:   document.getElementById('workStart').value,
+      km_start:     document.getElementById('kmStart').value,
+      work_end:     workEnd,
+      km_end:       document.getElementById('kmEnd').value,
+      km_drive:     document.getElementById('kmDrive').value,
+      highway_fee:  document.querySelector('input[name=highway_fee]').value,
+      parking_fee:  document.querySelector('input[name=parking_fee]').value,
+      notes:        document.querySelector('textarea[name=notes]').value,
       file_highway: fileHighway,
       file_parking: fileParking,
     };
@@ -502,17 +516,18 @@
     } finally {
       btn.textContent = '📤 日報を送信'; btn.disabled = false;
     }
-  });
+  }
 
-  // --- リセット ---
+  // リセット
   function resetForm() {
-    document.getElementById('reportForm').reset();
+    document.querySelectorAll('input[type=text], input[type=date], input[type=time], input[type=number], textarea')
+      .forEach(el => { if (!el.readOnly) el.value = ''; });
+    document.getElementById('deliveryDate').value = new Date().toISOString().split('T')[0];
+    document.getElementById('kmDrive').value = '';
     document.getElementById('prev-highway').innerHTML = '';
     document.getElementById('prev-parking').innerHTML = '';
-    document.getElementById('deliveryDate').value = new Date().toISOString().split('T')[0];
     document.getElementById('successOverlay').classList.remove('show');
-
-    window.scrollTo({top:0, behavior:'smooth'});
+    goToStart();
   }
 </script>
 </body>
